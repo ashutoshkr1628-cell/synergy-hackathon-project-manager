@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Registration — Synergy Hackathon OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #060913;
+      --panel: rgba(16,22,35,0.7);
+      --border: rgba(255,255,255,0.07);
+      --primary: #8b5cf6;
+      --primary-glow: rgba(139,92,246,0.35);
+      --secondary: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f97316;
+      --text: #f3f4f6;
+      --text-2: #9ca3af;
+      --text-3: #6b7280;
+      --font: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100vh;
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 20%, rgba(139,92,246,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(6,182,212,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* --- Page Layout --- */
+    .reg-page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    /* --- Header --- */
+    .reg-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .reg-logo {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .reg-brand h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .reg-brand p {
+      font-size: 10px;
+      color: var(--text-2);
+      letter-spacing: 1px;
+    }
+
+    /* --- Progress Steps --- */
+    .steps-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 32px;
+      width: 100%;
+      max-width: 560px;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      position: relative;
+    }
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      transition: background 0.4s;
+    }
+    .step-item.completed:not(:last-child)::after {
+      background: var(--primary);
+    }
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-3);
+      background: var(--panel);
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    .step-item.active .step-circle {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
+    }
+    .step-item.completed .step-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .step-label { font-size: 10px; font-weight: 600; color: var(--text-3); letter-spacing: 0.5px; }
+    .step-item.active .step-label { color: var(--primary); }
+    .step-item.completed .step-label { color: var(--text-2); }
+
+    /* --- Card Container --- */
+    .reg-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 560px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .reg-card-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .reg-card-sub {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 28px;
+    }
+
+    /* --- Form Elements --- */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-2);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .form-group label .required { color: var(--danger); margin-left: 2px; }
+    .form-control {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: var(--font);
+      color: var(--text);
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      border-color: rgba(139,92,246,0.5);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+    }
+    .form-control.error { border-color: rgba(239,68,68,0.5); }
+    .form-control option { background: #0d1220; }
+    .error-msg {
+      font-size: 11px;
+      color: var(--danger);
+      display: none;
+    }
+    .form-group.has-error .error-msg { display: block; }
+    .form-group.has-error .form-control { border-color: rgba(239,68,68,0.5); }
+    textarea.form-control { resize: vertical; min-height: 80px; }
+
+    /* --- Member Rows --- */
+    .members-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .member-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 32px;
+      gap: 8px;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .member-row:hover { border-color: rgba(255,255,255,0.1); }
+    .member-row .form-control { margin: 0; }
+    .remove-member-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      color: var(--danger);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .remove-member-btn:hover { background: rgba(239,68,68,0.15); }
+    .add-member-btn-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px dashed rgba(6,182,212,0.25);
+      border-radius: 8px;
+      padding: 9px 14px;
+      background: rgba(6,182,212,0.03);
+      transition: all 0.2s;
+    }
+    .add-member-btn-row:hover { background: rgba(6,182,212,0.07); border-color: rgba(6,182,212,0.4); }
+
+    /* --- Buttons --- */
+    .btn-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; }
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 22px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-2);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, var(--primary));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(139,92,246,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.45); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-success {
+      background: linear-gradient(135deg, #059669, var(--success));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+    }
+
+    /* --- Review Step --- */
+    .review-section { margin-bottom: 20px; }
+    .review-section h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .review-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+    .review-item .ri-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; }
+    .review-item .ri-value { font-size: 13px; font-weight: 600; }
+    .review-members-table { width: 100%; border-collapse: collapse; }
+    .review-members-table th {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-3);
+      font-weight: 700;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .review-members-table td {
+      font-size: 12px;
+      padding: 8px 10px;
+      border-top: 1px solid var(--border);
+    }
+    .role-badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(139,92,246,0.12);
+      color: var(--primary);
+      border: 1px solid rgba(139,92,246,0.2);
+      font-weight: 700;
+    }
+
+    /* --- Success Screen --- */
+    .success-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.1));
+      border: 2px solid rgba(16,185,129,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      animation: success-pop 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes success-pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .success-title { font-size: 22px; font-weight: 800; }
+    .success-sub { font-size: 13px; color: var(--text-2); max-width: 400px; }
+    .team-id-chip {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 10px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.3);
+      color: var(--primary);
+      letter-spacing: 2px;
+    }
+    .invite-box {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+    }
+    .invite-box input {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: var(--text-2);
+      outline: none;
+    }
+    .copy-btn {
+      background: rgba(6,182,212,0.1);
+      border: 1px solid rgba(6,182,212,0.2);
+      color: var(--secondary);
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: rgba(6,182,212,0.18); }
+    .status-pending-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249,115,22,0.1);
+      border: 1px solid rgba(249,115,22,0.25);
+      color: var(--warning);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .open-dashboard-btn {
+      background: linear-gradient(135deg, #7c3aed, var(--primary));
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(139,92,246,0.35);
+      transition: all 0.2s;
+    }
+    .open-dashboard-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.45); }
+
+    /* --- Step Transition --- */
+    .step-panel { display: none; animation: step-in 0.35s cubic-bezier(0.16,1,0.3,1); }
+    .step-panel.active { display: block; }
+    @keyframes step-in {
+      from { opacity: 0; transform: translateX(14px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* --- Invite Banner (for invited members) --- */
+    .invite-banner {
+      display: none;
+      width: 100%;
+      max-width: 560px;
+      padding: 16px 20px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .invite-banner.show { display: flex; }
+    .invite-banner .ib-icon { color: var(--success); font-size: 22px; flex-shrink: 0; }
+    .invite-banner h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .invite-banner p { font-size: 12px; color: var(--text-2); }
+
+    /* Char counter */
+    .char-count { font-size: 10px; color: var(--text-3); text-align: right; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="reg-page">
+
+    <!-- Header -->
+    <div class="reg-header">
+      <div class="reg-logo">
+        <span class="material-symbols-outlined" style="font-size:22px;color:#fff;">hub</span>
+      </div>
+      <div class="reg-brand">
+        <h1>SYNERGY</h1>
+        <p>HACKATHON OS — TEAM REGISTRATION</p>
+      </div>
+    </div>
+
+    <!-- Invite banner (shown if ?invite= param present) -->
+    <div class="invite-banner" id="invite-banner">
+      <span class="material-symbols-outlined ib-icon">mail</span>
+      <div>
+        <h4>You were invited to join a team!</h4>
+        <p id="invite-banner-text">Loading team details...</p>
+      </div>
+    </div>
+
+    <!-- Progress steps -->
+    <div class="steps-bar" id="steps-bar">
+      <div class="step-item active" data-step="1">
+        <div class="step-circle" id="step-circle-1">1</div>
+        <span class="step-label">Team Info</span>
+      </div>
+      <div class="step-item" data-step="2">
+        <div class="step-circle" id="step-circle-2">2</div>
+        <span class="step-label">Members</span>
+      </div>
+      <div class="step-item" data-step="3">
+        <div class="step-circle" id="step-circle-3">3</div>
+        <span class="step-label">Review</span>
+      </div>
+    </div>
+
+    <!-- Registration Card -->
+    <div class="reg-card" id="reg-card">
+
+      <!-- Step 1: Team Info -->
+      <div class="step-panel active" id="step-1">
+        <div class="reg-card-title">Team Information</div>
+        <div class="reg-card-sub">Tell us about your team and your hackathon project idea.</div>
+
+        <div class="form-group" id="fg-team-name">
+          <label>Team Name <span class="required">*</span></label>
+          <input type="text" class="form-control" id="team-name" placeholder="e.g. Quantum Coderz" maxlength="40" />
+          <span class="char-count" id="cc-team-name">0 / 40</span>
+          <span class="error-msg">Team name is required (3–40 characters).</span>
+        </div>
+
+        <div class="form-group" id="fg-track">
+          <label>Hackathon Track <span class="required">*</span></label>
+          <select class="form-control" id="team-track">
+            <option value="">Select a track...</option>
+            <option value="Web App">Web App</option>
+            <option value="AI / ML">AI / ML</option>
+            <option value="Mobile">Mobile</option>
+            <option value="IoT / Hardware">IoT / Hardware</option>
+            <option value="Open Innovation">Open Innovation</option>
+            <option value="FinTech">FinTech</option>
+            <option value="HealthTech">HealthTech</option>
+            <option value="EdTech">EdTech</option>
+          </select>
+          <span class="error-msg">Please select a track.</span>
+        </div>
+
+        <div class="form-group" id="fg-project-idea">
+          <label>Project Idea <span class="required">*</span></label>
+          <textarea class="form-control" id="project-idea" placeholder="Briefly describe your project (what it does, the problem it solves, and the tech you'll use)..." maxlength="500"></textarea>
+          <span class="char-count" id="cc-project-idea">0 / 500</span>
+          <span class="error-msg">Project idea is required (min 20 characters).</span>
+        </div>
+
+        <div class="form-group" id="fg-team-slogan">
+          <label>Team Tagline <span style="color:var(--text-3); font-weight:400;">(optional)</span></label>
+          <input type="text" class="form-control" id="team-slogan" placeholder="e.g. Building tomorrow's solutions today" maxlength="80" />
+          <span class="char-count" id="cc-team-slogan">0 / 80</span>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="step1-next">
+            Next: Members
+            <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Members -->
+      <div class="step-panel" id="step-2">
+        <div class="reg-card-title">Team Members</div>
+        <div class="reg-card-sub">Add up to 5 team members. At least 1 member is required.</div>
+
+        <div class="members-list" id="members-list"></div>
+
+        <div class="add-member-btn-row" id="add-member-row">
+          <span class="material-symbols-outlined" style="font-size:16px;">person_add</span>
+          Add Another Member
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" id="step2-back">
+            <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
+            Back
+          </button>
+          <button class="btn btn-primary" id="step2-next">
+            Review &amp; Submit
+            <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Review -->
+      <div class="step-panel" id="step-3">
+        <div class="reg-card-title">Review &amp; Submit</div>
+        <div class="reg-card-sub">Please confirm all information is correct before submitting.</div>
+
+        <div class="review-section">
+          <h4>Team Details</h4>
+          <div class="review-item">
+            <span class="ri-label">Team Name</span>
+            <span class="ri-value" id="rv-team-name">—</span>
+          </div>
+          <div class="review-item">
+            <span class="ri-label">Track</span>
+            <span class="ri-value" id="rv-track">—</span>
+          </div>
+          <div class="review-item">
+            <span class="ri-label">Tagline</span>
+            <span class="ri-value" id="rv-slogan" style="font-style:italic; color:var(--text-2);">—</span>
+          </div>
+          <div class="review-item">
+            <span class="ri-label">Project Idea</span>
+            <span class="ri-value" id="rv-project" style="font-size:12px; line-height:1.6;">—</span>
+          </div>
+        </div>
+
+        <div class="review-section">
+          <h4>Team Members</h4>
+          <div style="border-radius:8px; overflow:hidden; border:1px solid var(--border);">
+            <table class="review-members-table">
+              <thead>
+                <tr style="background:rgba(255,255,255,0.02);">
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody id="rv-members-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="padding:12px 14px; background:rgba(249,115,22,0.06); border:1px solid rgba(249,115,22,0.18); border-radius:8px; font-size:12px; color:var(--text-2); margin-bottom:6px;">
+          <strong style="color:var(--warning);">Note:</strong> Your registration will be reviewed by the admin. You will receive a Team ID and access to the full dashboard once approved. Keep your invite link to share with teammates.
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" id="step3-back">
+            <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
+            Back
+          </button>
+          <button class="btn btn-success" id="btn-submit-reg">
+            <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
+            Submit Registration
+          </button>
+        </div>
+      </div>
+
+      <!-- Success Screen -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">
+          <span class="material-symbols-outlined" style="color:var(--success);">check_circle</span>
+        </div>
+        <div class="success-title">Registration Submitted!</div>
+        <div class="success-sub">Your team has been registered and is awaiting admin approval. You'll be notified once your team is approved and your dashboard is unlocked.</div>
+
+        <div class="team-id-chip" id="success-team-id">TEAM-XXXX</div>
+
+        <div class="status-pending-badge">
+          <span class="material-symbols-outlined" style="font-size:14px;">hourglass_top</span>
+          Awaiting Admin Approval
+        </div>
+
+        <div style="width:100%;">
+          <div style="font-size:11px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Invite Link — Share with teammates</div>
+          <div class="invite-box">
+            <input type="text" id="success-invite-url" readonly />
+            <button class="copy-btn" id="copy-invite-btn">Copy</button>
+          </div>
+        </div>
+
+        <button class="open-dashboard-btn" onclick="window.location.href='synergy.html'">
+          <span class="material-symbols-outlined" style="font-size:16px; vertical-align:middle; margin-right:6px;">open_in_new</span>
+          Open Dashboard
+        </button>
+      </div>
+
+    </div><!-- end .reg-card -->
+
+    <!-- Already registered? link -->
+    <div style="margin-top:24px; font-size:12px; color:var(--text-3);">
+      Already registered?
+      <a href="synergy.html" style="color:var(--secondary); text-decoration:none; font-weight:600;">Open Dashboard</a>
+      &nbsp;·&nbsp;
+      <a href="synergy.html" id="admin-link" style="color:var(--text-3); text-decoration:none;">Admin Login</a>
+    </div>
+
+  </div>
+  <script src="register.js"></script>
+</body>
+</html>

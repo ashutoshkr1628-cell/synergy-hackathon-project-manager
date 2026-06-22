@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synergy – Hackathon Project Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Glowing background decorations -->
+  <div class="glow-backdrop glow-1"></div>
+  <div class="glow-backdrop glow-2"></div>
+  <div class="glow-backdrop glow-3"></div>
+
+  <div class="app-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon logo-pulse">
+          <span class="material-symbols-outlined">hub</span>
+        </div>
+        <div class="brand-text">
+          <h1>SYNERGY</h1>
+          <span class="sub-brand">HACKATHON OS</span>
+        </div>
+      </div>
+      <div class="brand-tagline">
+        <span class="tagline-text">Ship faster. Collaborate smarter. Win together.</span>
+      </div>
+
+      <div class="sidebar-team-status">
+        <div class="team-avatar-container">
+          <div class="team-avatar" id="sidebar-team-avatar">TA</div>
+          <span class="status-indicator online"></span>
+        </div>
+        <div class="team-info">
+          <h3 id="sidebar-team-name">Team Alpha</h3>
+          <p id="sidebar-team-score">Points: 0</p>
+          <div class="score-level-bar">
+            <div class="score-level-fill" id="score-level-fill" style="width:0%"></div>
+          </div>
+          <div class="score-level-label" id="score-level-label">Lv.1 Beginner</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="menu-item active" data-tab="dashboard">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard
+        </button>
+        <button class="menu-item" data-tab="tasks">
+          <span class="material-symbols-outlined">task_alt</span>
+          Task Manager
+          <span class="badge" id="sidebar-pending-tasks" style="display:none;">0</span>
+        </button>
+        <button class="menu-item" data-tab="parcel-sync">
+          <span class="material-symbols-outlined">package_2</span>
+          Parcle Sync
+          <span class="badge-dot" id="sync-warning-dot" style="display:none;"></span>
+        </button>
+        <button class="menu-item" data-tab="deploy-submission">
+          <span class="material-symbols-outlined">cloud_upload</span>
+          Deploy & Submit
+        </button>
+        <button class="menu-item" data-tab="leaderboard">
+          <span class="material-symbols-outlined">leaderboard</span>
+          Leaderboard
+        </button>
+        <button class="menu-item admin-only" data-tab="admin-console" style="display:none;">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          Admin Console
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <!-- Deadline Countdown -->
+        <div class="deadline-countdown" id="deadline-widget">
+          <div class="countdown-label">
+            <span class="material-symbols-outlined" style="font-size:14px;">timer</span>
+            Deadline
+          </div>
+          <div class="countdown-time" id="countdown-display">--:--:--</div>
+          <div class="countdown-subtext" id="countdown-subtext">Calculating...</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="system-time">
+          <span class="material-symbols-outlined">schedule</span>
+          <span id="live-clock">00:00:00</span>
+        </div>
+        <div class="build-version">Build v1.2.0 — Enter Pro SDK</div>
+        <a href="register.html" target="_blank" style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--secondary-color); text-decoration:none; margin-top:6px; opacity:0.8; transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+          <span class="material-symbols-outlined" style="font-size:12px;">app_registration</span>
+          Register a New Team
+        </a>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN WORKSPACE ===== -->
+    <main class="app-main">
+
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <h2 id="current-page-title">Team Dashboard</h2>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-sub" id="current-page-sub">Overview &amp; Analytics</span>
+        </div>
+
+        <div class="header-right">
+          <!-- Global search -->
+          <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" id="global-search" placeholder="Search app..." />
+          </div>
+
+          <!-- Live sync indicator -->
+          <div class="live-sync-indicator" id="live-sync-indicator" title="Real-time sync active">
+            <span class="sync-pulse-dot"></span>
+            <span class="sync-label">ONLINE</span>
+          </div>
+
+          <!-- Environment Mode Badge -->
+          <div class="env-mode-badge" id="env-mode-badge" title="Current environment mode">
+            <span class="material-symbols-outlined" style="font-size:12px;">wifi</span>
+            ONLINE
+          </div>
+
+          <!-- Env Mode Selector (admin only) -->
+          <div class="env-mode-selector admin-only" style="display:none;">
+            <span class="material-symbols-outlined" style="font-size:14px; color:var(--text-grey);">tune</span>
+            <select class="form-control" id="env-mode-select" style="font-size:11px; padding:4px 8px; background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); color:var(--text-primary); cursor:pointer;">
+              <option value="offline">Offline Mode</option>
+              <option value="demo">Demo Mode</option>
+              <option value="online" selected>Online Mode</option>
+            </select>
+          </div>
+
+          <!-- Role selector -->
+          <div class="role-selector-container">
+            <span class="material-symbols-outlined selector-icon">manage_accounts</span>
+            <select class="role-select" id="header-role-select">
+              <option value="developer">Developer</option>
+              <option value="mentor">Mentor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <!-- Theme toggle -->
+          <button class="header-action-btn" id="theme-toggle-btn" title="Toggle Theme">
+            <span class="material-symbols-outlined" id="theme-toggle-icon">light_mode</span>
+          </button>
+
+          <!-- Chat toggle -->
+          <button class="header-action-btn" id="chat-toggle-btn" title="Team Chat">
+            <span class="material-symbols-outlined">chat</span>
+            <span class="badge-dot" id="chat-notif-dot" style="display:none;"></span>
+          </button>
+
+          <!-- Notifications bell -->
+          <div class="header-action-btn" id="notif-bell-btn" title="Notifications" style="position:relative; cursor:pointer;">
+            <span class="material-symbols-outlined">notifications</span>
+            <div class="dropdown-panel" id="notif-dropdown">
+              <div class="dropdown-header">
+                <h4>Notifications</h4>
+                <button class="text-btn" id="clear-notifs-btn">Clear All</button>
+              </div>
+              <div class="dropdown-list" id="notif-list"></div>
+            </div>
+          </div>
+
+          <!-- User profile -->
+          <div class="user-profile">
+            <div class="user-info">
+              <span class="user-name" id="user-display-name">Ashutosh Kumar</span>
+              <span class="user-role" id="user-display-role">Lead Developer</span>
+            </div>
+            <div class="user-avatar" id="user-display-avatar">AK</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Urgency Banner (shown when deadline < 2h OR high-priority tasks overdue) -->
+      <div class="urgency-banner" id="urgency-banner" style="display:none;">
+        <span class="material-symbols-outlined urgency-icon">warning</span>
+        <span class="urgency-text" id="urgency-text">Deadline approaching! Complete remaining tasks and submit your project.</span>
+        <button class="btn btn-small" id="urgency-cta" style="background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.3); margin-left:auto;">Go to Submit</button>
+        <button class="urgency-close" id="urgency-close">
+          <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+        </button>
+      </div>
+
+      <!-- Demo Mode Banner (visible in demo mode) -->
+      <div class="demo-mode-banner" id="demo-mode-banner" style="display:none;">
+        <span class="material-symbols-outlined" style="font-size:18px; color:var(--warning-color);">play_circle</span>
+        <div style="flex:1;">
+          <strong style="color:var(--warning-color);">DEMO MODE</strong>
+          <span style="font-size:12px; color:var(--text-secondary); margin-left:8px;">Safe sandbox loaded — judges can interact with all features without affecting production data.</span>
+        </div>
+        <span style="font-size:11px; color:var(--text-grey); font-style:italic;">
+          "Synergy ensures secure Offline mode until Admin approval, then shifts to Demo mode for safe testing with dummy data, and finally moves to ONLINE mode for real-time collaboration."
+        </span>
+        <button class="urgency-close" id="demo-banner-close">
+          <span class="material-symbols-outlined" style="font-size:16px;">close</span>
+        </button>
+      </div>
+
+      <!-- Content body -->
+      <div class="content-body">
+
+        <!-- ===== TAB: DASHBOARD ===== -->
+        <div class="tab-panel active" id="tab-dashboard">
+
+          <!-- Metrics Grid -->
+          <div class="metrics-grid">
+            <div class="metric-card glass-panel glow-purple card-enter" style="--enter-delay:0ms">
+              <div class="metric-icon purple"><span class="material-symbols-outlined">leaderboard</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Current Rank</div>
+                <div class="metric-value" id="dash-rank">#4</div>
+                <div class="metric-trend"><span class="material-symbols-outlined">trending_up</span> Global Standings</div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-cyan card-enter" style="--enter-delay:80ms">
+              <div class="metric-icon cyan"><span class="material-symbols-outlined">task_alt</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Sprint Progress</div>
+                <div class="metric-value" id="dash-progress-text">0%</div>
+                <div class="progress-bar-small"><div class="progress-bar-fill" id="dash-progress-bar" style="width:0%; background: linear-gradient(to right, var(--secondary-color), var(--primary-color));"></div></div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-orange card-enter" style="--enter-delay:160ms">
+              <div class="metric-icon orange"><span class="material-symbols-outlined">package_2</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Parcle Sync Status</div>
+                <div class="metric-value" id="dash-sync-count">0 Syncs</div>
+                <div class="metric-trend" id="dash-sync-status">Checking...</div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-green card-enter" style="--enter-delay:240ms">
+              <div class="metric-icon green"><span class="material-symbols-outlined">cloud_upload</span></div>
+              <div class="metric-data">
+                <div class="metric-label" id="deploy-metric-label">Environment Status</div>
+                <div class="metric-value text-success" id="dash-deploy-status">ONLINE</div>
+                <div class="metric-trend" id="dash-deploy-url">Deploy to activate online build</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Achievements Shelf -->
+          <div class="achievements-shelf glass-panel">
+            <div class="shelf-header">
+              <span class="material-symbols-outlined color-cyan">emoji_events</span>
+              <h3>Achievements &amp; Badges</h3>
+              <div class="badge-progress-pill" id="badge-progress-pill">0/5 Earned</div>
+            </div>
+            <div class="badge-grid" id="badge-shelf-grid"></div>
+          </div>
+
+          <!-- Mid Row: Analytics + VCS/Team -->
+          <div class="dashboard-mid-row">
+
+            <!-- SVG Analytics Suite -->
+            <div class="dashboard-card glass-panel glow-purple">
+              <div class="card-header">
+                <h3>Project Analytics</h3>
+                <div class="analytics-tabs">
+                  <button class="analytics-tab-btn active" data-chart="velocity">Velocity</button>
+                  <button class="analytics-tab-btn" data-chart="burndown">Burndown</button>
+                  <button class="analytics-tab-btn" data-chart="activity">Activity</button>
+                </div>
+              </div>
+              <div class="card-body" style="position:relative;">
+                <!-- Velocity Chart -->
+                <svg id="chart-velocity" class="analytics-svg" viewBox="0 0 500 180" style="display:block;">
+                  <defs>
+                    <linearGradient id="gradVelocity" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(139,92,246,0.5)" />
+                      <stop offset="100%" stop-color="rgba(139,92,246,0)" />
+                    </linearGradient>
+                  </defs>
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">TASK COMPLETION VELOCITY (WEEKLY)</text>
+                  <!-- Y-axis labels -->
+                  <text x="28" y="48" fill="var(--text-grey)" font-size="8" text-anchor="end">5</text>
+                  <text x="28" y="88" fill="var(--text-grey)" font-size="8" text-anchor="end">3</text>
+                  <text x="28" y="128" fill="var(--text-grey)" font-size="8" text-anchor="end">1</text>
+                  <!-- Grid lines -->
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Fill area -->
+                  <polygon points="35,125 110,105 185,85 260,65 335,75 410,45 480,55 480,165 35,165" fill="url(#gradVelocity)" opacity="0.5"/>
+                  <!-- Chart line -->
+                  <polyline points="35,125 110,105 185,85 260,65 335,75 410,45 480,55" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linejoin="round"/>
+                  <!-- Data points -->
+                  <circle class="chart-dot" cx="35" cy="125" r="4" data-tip="Week 1: 1 tasks completed"/>
+                  <circle class="chart-dot" cx="110" cy="105" r="4" data-tip="Week 2: 2 tasks completed"/>
+                  <circle class="chart-dot" cx="185" cy="85" r="4" data-tip="Week 3: 3 tasks completed"/>
+                  <circle class="chart-dot" cx="260" cy="65" r="4" data-tip="Week 4: 4 tasks (Team Sprint!)"/>
+                  <circle class="chart-dot" cx="335" cy="75" r="4" data-tip="Week 5: 3 (merge conflict delay)"/>
+                  <circle class="chart-dot pulse" cx="410" cy="45" r="5" data-tip="Week 6: 5 tasks completed!"/>
+                  <!-- X-axis labels -->
+                  <text x="35" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 1</text>
+                  <text x="110" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 2</text>
+                  <text x="185" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 3</text>
+                  <text x="260" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 4</text>
+                  <text x="335" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 5</text>
+                  <text x="410" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 6</text>
+                </svg>
+                <!-- Burndown Chart -->
+                <svg id="chart-burndown" class="analytics-svg" viewBox="0 0 500 180" style="display:none;">
+                  <defs>
+                    <linearGradient id="gradBurn" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(6,182,212,0.5)"/>
+                      <stop offset="100%" stop-color="rgba(6,182,212,0)"/>
+                    </linearGradient>
+                  </defs>
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">SPRINT BURNDOWN (IDEAL VS ACTUAL)</text>
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Ideal burndown -->
+                  <polyline points="35,45 480,165" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                  <!-- Actual burndown fill -->
+                  <polygon points="35,45 110,60 185,80 260,95 335,115 410,130 480,165 480,165 35,45" fill="url(#gradBurn)" opacity="0.4"/>
+                  <polyline points="35,45 110,60 185,80 260,95 335,115 410,130 480,165" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle class="chart-dot" cx="35" cy="45" r="4" data-tip="Day 0: 10 remaining (start)"/>
+                  <circle class="chart-dot" cx="110" cy="60" r="4" data-tip="Day 2: 8 tasks remaining"/>
+                  <circle class="chart-dot" cx="185" cy="80" r="4" data-tip="Day 4: 6 remaining"/>
+                  <circle class="chart-dot" cx="260" cy="95" r="4" data-tip="Day 6: 5 remaining"/>
+                  <circle class="chart-dot" cx="335" cy="115" r="4" data-tip="Day 8: 3 remaining"/>
+                  <circle class="chart-dot pulse" cx="410" cy="130" r="5" data-tip="Day 10: 2 remaining (current)"/>
+                  <text x="35" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 0</text>
+                  <text x="110" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 2</text>
+                  <text x="185" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 4</text>
+                  <text x="260" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 6</text>
+                  <text x="335" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 8</text>
+                  <text x="410" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 10</text>
+                </svg>
+                <!-- Activity Chart (Bar) -->
+                <svg id="chart-activity" class="analytics-svg" viewBox="0 0 500 180" style="display:none;">
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">DAILY COMMITS &amp; SYNCS (LAST 7 DAYS)</text>
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Commits (purple bars) -->
+                  <rect x="45" y="95" width="24" height="70" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Mon: 3 commits"/>
+                  <rect x="120" y="75" width="24" height="90" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Tue: 4 commits"/>
+                  <rect x="195" y="115" width="24" height="50" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Wed: 2 commits"/>
+                  <rect x="270" y="65" width="24" height="100" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Thu: 5 commits"/>
+                  <rect x="345" y="85" width="24" height="80" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Fri: 4 commits"/>
+                  <rect x="420" y="55" width="24" height="110" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Sat: 6 commits"/>
+                  <!-- Syncs (cyan bars) -->
+                  <rect x="72" y="125" width="18" height="40" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Mon: 1 sync"/>
+                  <rect x="147" y="105" width="18" height="60" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Tue: 2 syncs"/>
+                  <rect x="222" y="135" width="18" height="30" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Wed: 1 sync"/>
+                  <rect x="297" y="105" width="18" height="60" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Thu: 2 syncs"/>
+                  <rect x="372" y="115" width="18" height="50" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Fri: 2 syncs"/>
+                  <rect x="447" y="85" width="18" height="80" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Sat: 3 syncs"/>
+                  <!-- Legend -->
+                  <rect x="320" y="12" width="10" height="10" rx="2" fill="var(--primary-color)"/>
+                  <text x="334" y="21" fill="var(--text-secondary)" font-size="8">Commits</text>
+                  <rect x="380" y="12" width="10" height="10" rx="2" fill="var(--secondary-color)"/>
+                  <text x="394" y="21" fill="var(--text-secondary)" font-size="8">Syncs</text>
+                  <text x="57" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Mon</text>
+                  <text x="132" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Tue</text>
+                  <text x="207" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wed</text>
+                  <text x="282" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Thu</text>
+                  <text x="357" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Fri</text>
+                  <text x="432" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Sat</text>
+                </svg>
+                <div id="chart-tooltip" class="chart-tooltip">Hover over chart elements to inspect details</div>
+              </div>
+            </div>
+
+            <!-- VCS & Team Workspace Card -->
+            <div class="dashboard-card glass-panel glow-cyan">
+              <div class="card-header">
+                <h3>VCS &amp; Team Workspace</h3>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <button class="text-btn" id="edit-team-btn">Edit Team</button>
+                  <button class="btn btn-outline btn-small dev-only" id="add-member-btn">
+                    <span class="material-symbols-outlined">person_add</span> Add
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="gap:14px;">
+                <!-- GitHub Sync Widget -->
+                <div class="github-sync-widget">
+                  <div class="github-status-row">
+                    <span class="material-symbols-outlined" id="github-icon" style="font-size:28px; color:var(--text-grey);">device_hub</span>
+                    <div class="git-info-text">
+                      <h4 id="github-repo-lbl">Repository Offline</h4>
+                      <p id="github-branch-lbl">Branch: -</p>
+                    </div>
+                  </div>
+                  <!-- Connect form -->
+                  <div id="github-connect-form" style="display:flex; gap:8px;">
+                    <input type="text" class="form-control" id="github-repo-input" placeholder="https://github.com/team/repo" style="flex:1;" />
+                    <button class="btn btn-outline btn-small" id="btn-github-connect">Connect</button>
+                  </div>
+                  <!-- Active panel -->
+                  <div id="github-active-panel" style="display:none;">
+                    <div class="git-commit-list" id="git-commits-container"></div>
+                  </div>
+                </div>
+
+                <!-- Team Profile -->
+                <div class="team-profile-display">
+                  <div class="team-meta">
+                    <h4 id="team-display-name-lbl">Team Alpha</h4>
+                    <p class="team-slogan" id="team-display-slogan-lbl">Building the future, one parcel at a time.</p>
+                  </div>
+                </div>
+                <div class="team-members-section">
+                  <h5>Roster Members</h5>
+                  <div class="members-list" id="members-display-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Bottom Row -->
+          <div class="dashboard-mid-row" style="grid-template-columns: 1.6fr 1fr;">
+            <!-- Activity Timeline -->
+            <div class="dashboard-card glass-panel">
+              <div class="card-header">
+                <h3>Project Activity Feed</h3>
+                <button class="icon-btn" id="refresh-activity-btn" title="Refresh">
+                  <span class="material-symbols-outlined" style="font-size:18px;">refresh</span>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="activity-timeline" id="dashboard-activity-timeline"></div>
+              </div>
+            </div>
+
+            <!-- Submission Checklist -->
+            <div class="dashboard-card glass-panel">
+              <div class="card-header">
+                <h3>Submission Checklist</h3>
+              </div>
+              <div class="card-body">
+                <ul class="checklist-list">
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-tasks-done" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-tasks">Complete all Core Tasks (0/0)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-parcel-sync" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-sync">Sync project data with Parcle</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-demo-deploy" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-deploy">Deploy demo to Enter Pro Production</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-final-submit" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-submit">Submit final deliverables</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- END TAB: DASHBOARD -->
+
+
+        <!-- ===== TAB: TASK MANAGER ===== -->
+        <div class="tab-panel" id="tab-tasks" style="height:100%;">
+          <div class="tab-controls-row">
+            <div class="search-filters">
+              <div class="search-box">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" placeholder="Filter tasks by name..." id="task-filter-search" />
+              </div>
+              <select class="filter-select" id="task-filter-priority">
+                <option value="all">All Priorities</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select class="filter-select" id="task-filter-assignee">
+                <option value="all">All Assignees</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-glow dev-only" id="btn-create-task">
+              <span class="material-symbols-outlined">add</span> New Task
+            </button>
+          </div>
+          <div class="kanban-board">
+            <div class="kanban-column" id="col-todo">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-orange"></span>
+                  <h3>To Do</h3>
+                </div>
+                <span class="column-count" id="count-todo">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="todo"></div>
+            </div>
+            <div class="kanban-column" id="col-progress">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-cyan"></span>
+                  <h3>In Progress</h3>
+                </div>
+                <span class="column-count" id="count-progress">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="progress"></div>
+            </div>
+            <div class="kanban-column" id="col-review">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-purple"></span>
+                  <h3>Review</h3>
+                </div>
+                <span class="column-count" id="count-review">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="review"></div>
+            </div>
+            <div class="kanban-column" id="col-completed">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-green"></span>
+                  <h3>Completed</h3>
+                </div>
+                <span class="column-count" id="count-completed">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="completed"></div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: TASK MANAGER -->
+
+
+        <!-- ===== TAB: PARCLE SYNC ===== -->
+        <div class="tab-panel" id="tab-parcel-sync" style="height:100%;">
+          <div class="parcel-grid" style="height:100%;">
+            <!-- Left: Main Sync Panel -->
+            <div class="parcel-left-panel glass-panel">
+              <div class="panel-header">
+                <div class="header-title">
+                  <span class="material-symbols-outlined color-cyan">package_2</span>
+                  <h3>Parcle Data Bundler</h3>
+                </div>
+                <span class="status-badge badge bg-green-dim text-success pulse" id="sync-status-badge">ONLINE</span>
+              </div>
+              <div class="parcel-dashboard">
+                <div class="sync-main-box">
+                  <div class="sync-ring-wrapper">
+                    <div class="sync-outer-ring" id="sync-outer-ring"></div>
+                    <div class="sync-inner-ring"><span class="material-symbols-outlined" id="sync-main-icon">cloud_done</span></div>
+                  </div>
+                  <h3 id="sync-display-status">Portal Synced</h3>
+                  <p id="sync-display-subtext">Last transaction: Never</p>
+                  <div class="sync-stats-box">
+                    <div class="sync-stat-item">
+                      <span class="label">Pending</span>
+                      <span class="val color-orange" id="local-changes-count">0 changes</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="sync-stat-item">
+                      <span class="label">Size</span>
+                      <span class="val" id="local-parcel-size">0.0 KB</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group" style="justify-content:center;">
+                  <button class="btn btn-primary btn-glow dev-only" id="btn-sync-parcel">
+                    <span class="material-symbols-outlined">cloud_sync</span> Sync Parcle Now
+                  </button>
+                  <button class="btn btn-outline btn-small" id="btn-export-parcel">
+                    <span class="material-symbols-outlined">download</span> Export
+                  </button>
+                </div>
+                <div class="sync-backup-section">
+                  <h4>Import Parcel</h4>
+                  <p>Restore session data from an exported parcel JSON configuration file.</p>
+                  <button class="btn btn-outline btn-small btn-block" id="btn-import-parcel-trigger">
+                    <span class="material-symbols-outlined">upload_file</span> Import Parcel File
+                  </button>
+                  <input type="file" id="parcel-file-input" accept=".json" style="display:none;" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Terminal + History -->
+            <div class="parcel-right-panel">
+              <!-- Terminal logger -->
+              <div class="terminal-panel glass-panel" style="flex:1; min-height:200px;">
+                <div class="terminal-header">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                  </div>
+                  <span class="terminal-title">sync-gateway.enter.pro / terminal</span>
+                  <button class="icon-btn" id="clear-terminal-btn" title="Clear terminal">
+                    <span class="material-symbols-outlined" style="font-size:14px;">delete_sweep</span>
+                  </button>
+                </div>
+                <div class="terminal-body" id="sync-terminal-logs">
+                  <div class="log-line system">[system] Synergy Parcle Data Bundler — v1.1.0 gateway initialized.</div>
+                  <div class="log-line success">[system] TLS 1.3 handshake verified. Endpoint secured.</div>
+                  <div class="log-line command"><span class="prompt">&gt;</span> <span class="cursor"></span></div>
+                </div>
+              </div>
+
+              <!-- Parcel history table -->
+              <div class="parcel-history-panel glass-panel" style="flex:1;">
+                <div class="panel-header">
+                  <div class="header-title">
+                    <span class="material-symbols-outlined" style="font-size:18px; color:var(--text-secondary);">history</span>
+                    <h3>Parcel Transaction Ledger</h3>
+                  </div>
+                </div>
+                <div class="table-container">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Parcel ID</th>
+                        <th>Size</th>
+                        <th>Type</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="parcel-history-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: PARCLE SYNC -->
+
+
+        <!-- ===== TAB: DEPLOY & SUBMISSION ===== -->
+        <div class="tab-panel" id="tab-deploy-submission" style="height:100%;">
+          <div class="deploy-grid" style="height:100%;">
+
+            <!-- Left: Deployer Control Panel -->
+            <div class="deploy-left-panel glass-panel">
+              <div class="panel-header">
+                <div class="header-title">
+                  <span class="material-symbols-outlined color-cyan">cloud_upload</span>
+                  <h3>Enter Pro Compiler</h3>
+                </div>
+                <span class="status-badge badge bg-purple-dim text-purple">READY</span>
+              </div>
+
+              <div class="deploy-controls">
+                <!-- Environment Selector -->
+                <div class="deploy-environment-selector">
+                  <button class="env-btn active" id="btn-env-staging" data-env="staging">Staging Preview</button>
+                  <button class="env-btn" id="btn-env-prod" data-env="production">Production Build</button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Build Command</label>
+                    <input type="text" class="form-control" id="deploy-build-cmd" value="npm run build" />
+                  </div>
+                  <div class="form-group">
+                    <label>Output Directory</label>
+                    <input type="text" class="form-control" id="deploy-output-dir" value="dist/" />
+                  </div>
+                  <div class="form-group" style="grid-column: 1/-1;">
+                    <label>Deploy Branch</label>
+                    <select class="form-control" id="deploy-branch">
+                      <option value="main">main (stable)</option>
+                      <option value="staging">staging (preview)</option>
+                      <option value="develop">develop (experimental)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="deploy-action-box">
+                  <button class="btn btn-primary btn-large btn-block btn-glow dev-only" id="btn-deploy-demo">
+                    <span class="material-symbols-outlined">cloud_upload</span> Deploy Demo to Enter.pro
+                  </button>
+                  <p class="hint-text" id="deploy-desc-hint" style="margin-top:8px; text-align:center;"></p>
+                </div>
+              </div>
+
+              <!-- Preview Device -->
+              <div style="padding:0 20px 20px;">
+                <div class="preview-device glass-panel">
+                  <div class="device-header">
+                    <div class="address-bar">
+                      <span class="material-symbols-outlined icon-secure">lock</span>
+                      <span id="device-address">https://team-alpha-staging.enter.pro/demo</span>
+                      <button id="refresh-preview-btn" title="Refresh Preview">
+                        <span class="material-symbols-outlined">refresh</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="device-body">
+                    <div class="preview-iframe-placeholder">
+                      <div class="offline-state" id="preview-offline-msg">
+                        <span class="material-symbols-outlined">cloud_off</span>
+                        <h4>No Active Build</h4>
+                        <p>Deploy to your selected environment to see the live sandbox mockup.</p>
+                      </div>
+                      <div class="live-sandbox-ui" id="preview-live-ui" style="display:none;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Deploy Terminal -->
+              <div style="padding:0 20px 20px; flex:1; display:flex; flex-direction:column; min-height:150px;">
+                <div class="terminal-panel" style="flex:1;">
+                  <div class="terminal-header">
+                    <div class="terminal-dots">
+                      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    </div>
+                    <span class="terminal-title">deploy-pipeline.enter.pro / output</span>
+                    <button class="icon-btn" id="clear-deploy-terminal-btn">
+                      <span class="material-symbols-outlined" style="font-size:14px;">delete_sweep</span>
+                    </button>
+                  </div>
+                  <div class="terminal-body" id="deploy-terminal-logs">
+                    <div class="log-line system">[ENTERPRO] Enter Pro Deployment Compiler ready. Configure and deploy.</div>
+                    <div class="log-line command"><span class="prompt">&gt;</span> <span class="cursor"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Submission Panel -->
+            <div class="deploy-right-panel">
+              <div class="submission-panel glass-panel">
+                <div class="panel-header">
+                  <div class="header-title">
+                    <span class="material-symbols-outlined" style="font-size:18px; color:var(--warning-color);">description</span>
+                    <h3>Deliverables Submission</h3>
+                  </div>
+                  <span class="badge badge-pulse">DEADLINE ACTIVE</span>
+                </div>
+                <form class="submission-form" id="submission-form">
+                  <input type="hidden" id="sub-demo-url" />
+                  <div class="form-group">
+                    <label>Project Title</label>
+                    <input type="text" class="form-control" id="sub-project-name" placeholder="e.g. CodeFlow AI" />
+                  </div>
+                  <div class="form-group">
+                    <label>Project Tagline</label>
+                    <input type="text" class="form-control" id="sub-tagline" placeholder="One-line product description..." />
+                  </div>
+                  <div class="form-group">
+                    <label>GitHub Repository URL</label>
+                    <input type="url" class="form-control" id="sub-github-url" placeholder="https://github.com/..." />
+                  </div>
+                  <div class="form-group">
+                    <label>Demo Video URL</label>
+                    <input type="url" class="form-control" id="sub-video-url" placeholder="https://youtube.com/..." />
+                  </div>
+                  <div class="form-group">
+                    <label>Pitch Deck URL</label>
+                    <input type="url" class="form-control" id="sub-deck-url" placeholder="https://slides.google.com/..." />
+                  </div>
+
+                  <div class="submission-actions">
+                    <div class="timeline-status">
+                      <div class="timeline-node active" id="node-deploy">
+                        <div class="node-circle">1</div>
+                        <div class="node-lbl">Deploy</div>
+                      </div>
+                      <div class="timeline-line" id="line-1"></div>
+                      <div class="timeline-node" id="node-submit">
+                        <div class="node-circle">2</div>
+                        <div class="node-lbl">Submit</div>
+                      </div>
+                      <div class="timeline-line" id="line-2"></div>
+                      <div class="timeline-node" id="node-review">
+                        <div class="node-circle">3</div>
+                        <div class="node-lbl">Review</div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-large dev-only" id="btn-submit-project" disabled>
+                      <span class="material-symbols-outlined">send</span> Submit Deliverables
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Mentor Evaluation Panel -->
+              <div class="glass-panel" id="mentor-eval-panel" style="padding:20px; flex-direction:column; gap:14px; display:none;">
+                <h3 style="font-size:14px; font-weight:700;">Mentor Evaluation Panel</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>UX Score (1-10)</label>
+                    <input type="number" class="form-control" id="eval-score-ux" min="1" max="10" value="8" />
+                  </div>
+                  <div class="form-group">
+                    <label>Code Score (1-10)</label>
+                    <input type="number" class="form-control" id="eval-score-code" min="1" max="10" value="8" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Review Comments</label>
+                  <textarea class="form-control" id="eval-comments" rows="3" placeholder="Enter feedback for the team..." style="resize:none;"></textarea>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-success" id="btn-eval-approve">Approve &amp; Score</button>
+                  <button class="btn btn-outline" id="btn-eval-request-changes">Request Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: DEPLOY & SUBMISSION -->
+
+
+        <!-- ===== TAB: LEADERBOARD ===== -->
+        <div class="tab-panel" id="tab-leaderboard">
+          <!-- Podium Top 3 -->
+          <div class="leaderboard-podium">
+            <!-- Silver (2nd) -->
+            <div class="podium-card glass-panel silver" style="order:1;">
+              <div class="podium-badge">2</div>
+              <div class="podium-team-details">
+                <h3 id="podium-2-name">DevDynamo</h3>
+                <p class="podium-score" id="podium-2-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+            <!-- Gold (1st) -->
+            <div class="podium-card glass-panel gold" style="order:2;">
+              <div class="podium-badge">1</div>
+              <div class="podium-crown"><span class="material-symbols-outlined">emoji_events</span></div>
+              <div class="podium-team-details">
+                <h3 id="podium-1-name">Team Alpha</h3>
+                <p class="podium-score" id="podium-1-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+            <!-- Bronze (3rd) -->
+            <div class="podium-card glass-panel bronze" style="order:3;">
+              <div class="podium-badge">3</div>
+              <div class="podium-team-details">
+                <h3 id="podium-3-name">Quantum Coderz</h3>
+                <p class="podium-score" id="podium-3-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Rankings Table -->
+          <div class="leaderboard-list-panel glass-panel">
+            <div class="panel-header">
+              <div class="header-title">
+                <span class="material-symbols-outlined color-orange">table_chart</span>
+                <h3>Full Rankings</h3>
+              </div>
+              <div class="search-box" style="width:200px;">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="leaderboard-search" placeholder="Search teams..." />
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Score</th>
+                    <th>Tasks</th>
+                    <th>Syncs</th>
+                    <th>Demo</th>
+                    <th>Status</th>
+                    <th>Mentor Notes</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: LEADERBOARD -->
+
+
+        <!-- ===== TAB: ADMIN CONSOLE ===== -->
+        <div class="tab-panel" id="tab-admin-console">
+
+          <!-- ---- Pending Teams Dashboard ---- -->
+          <div class="glass-panel" style="padding:24px; margin-bottom:20px;">
+            <div class="panel-header" style="margin-bottom:16px;">
+              <div class="header-title">
+                <span class="material-symbols-outlined color-orange">groups</span>
+                <h3>Pending Team Registrations</h3>
+                <span class="badge" id="pending-teams-badge" style="background:rgba(249,115,22,0.15); color:var(--warning-color); border:1px solid rgba(249,115,22,0.25);">0</span>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button class="btn btn-outline btn-small" id="btn-register-link">
+                  <span class="material-symbols-outlined">open_in_new</span> Registration Page
+                </button>
+                <button class="btn btn-outline btn-small" id="btn-refresh-pending">
+                  <span class="material-symbols-outlined">refresh</span> Refresh
+                </button>
+                <button class="btn btn-primary btn-small" id="btn-bulk-approve" style="display:none;">
+                  <span class="material-symbols-outlined">done_all</span> Approve Selected
+                </button>
+              </div>
+            </div>
+
+            <!-- Pending teams list -->
+            <div id="pending-teams-list">
+              <div class="empty-state" id="pending-empty-state" style="padding:32px; text-align:center; color:var(--text-grey);">
+                <span class="material-symbols-outlined" style="font-size:36px; opacity:0.3;">inbox</span>
+                <p style="margin-top:8px; font-size:13px;">No pending team registrations.</p>
+                <a href="register.html" style="font-size:12px; color:var(--secondary-color); margin-top:6px; display:inline-block;">Open Registration Page</a>
+              </div>
+            </div>
+
+            <!-- Rejection modal overlay -->
+            <div class="modal-overlay" id="reject-modal-overlay" style="display:none; z-index:1100;">
+              <div class="modal-card" style="max-width:420px; padding:28px;">
+                <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">Reject Team Registration</h3>
+                <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px;">Provide a reason so the team knows why their registration was rejected.</p>
+                <input type="hidden" id="reject-team-id" />
+                <div class="form-group">
+                  <label>Rejection Reason <span style="color:var(--danger-color)">*</span></label>
+                  <textarea class="form-control" id="reject-reason-input" rows="3" placeholder="e.g. Team name already taken, incomplete project idea, etc."></textarea>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+                  <button class="btn btn-outline btn-small" id="reject-cancel-btn">Cancel</button>
+                  <button class="btn btn-small" id="reject-confirm-btn" style="background:var(--danger-color); color:#fff; border:none;">
+                    <span class="material-symbols-outlined">block</span> Confirm Rejection
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Audit Log ---- -->
+          <div class="glass-panel" style="padding:24px; margin-bottom:20px;">
+            <div class="panel-header" style="margin-bottom:16px;">
+              <div class="header-title">
+                <span class="material-symbols-outlined" style="color:var(--primary-color);">history</span>
+                <h3>Admin Audit Log</h3>
+              </div>
+              <button class="btn btn-outline btn-small" id="btn-clear-audit">
+                <span class="material-symbols-outlined">delete_sweep</span> Clear Log
+              </button>
+            </div>
+            <div id="audit-log-list">
+              <div style="text-align:center; padding:20px; color:var(--text-grey); font-size:12px;" id="audit-empty">No actions recorded yet.</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <!-- Settings Panel -->
+            <div class="glass-panel" style="padding:24px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:20px;">Global Hackathon Settings</h3>
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div class="form-group">
+                  <label>Submission Deadline</label>
+                  <input type="datetime-local" class="form-control" id="admin-deadline-input" value="2026-06-21T18:00" />
+                </div>
+                <div class="form-group">
+                  <label>Auto-sync Interval (seconds)</label>
+                  <input type="number" class="form-control" id="admin-autosync-input" value="60" min="10" max="3600" />
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <input type="checkbox" id="admin-allow-late" checked style="width:16px; height:16px;" />
+                  <label for="admin-allow-late" style="font-size:13px;">Allow Late Submissions</label>
+                </div>
+                <button class="btn btn-primary" id="btn-save-admin-settings">
+                  <span class="material-symbols-outlined">save</span> Save Settings
+                </button>
+              </div>
+            </div>
+            <!-- Fault Injection Panel -->
+            <div class="glass-panel" style="padding:24px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:20px;">Fault Injection &amp; Diagnostics</h3>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="font-size:12px; color:var(--text-secondary);">
+                  Inject failure scenarios to test system resilience and error handling flows.
+                </div>
+                <button class="btn btn-outline" id="btn-sim-sync-fail">
+                  <span class="material-symbols-outlined">sync_problem</span> Simulate Sync Failure
+                </button>
+                <button class="btn btn-outline" id="btn-sim-build-fail">
+                  <span class="material-symbols-outlined">error</span> Simulate Build Failure
+                </button>
+                <hr style="border-color:rgba(255,255,255,0.04); margin:6px 0;" />
+                <button class="btn btn-outline" id="btn-reset-db-state" style="border-color:var(--danger-color); color:var(--danger-color);">
+                  <span class="material-symbols-outlined">delete_forever</span> Reset All State Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: ADMIN CONSOLE -->
+
+      </div><!-- end .content-body -->
+    </main>
+  </div>
+
+  <!-- ===== CHAT DRAWER ===== -->
+  <div class="chat-drawer" id="chat-drawer">
+    <div class="chat-header">
+      <div>
+        <h3>Team Collaboration</h3>
+        <div class="status-lbl">All members online</div>
+      </div>
+      <button class="icon-btn" id="chat-drawer-close">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="chat-messages" id="chat-messages-container"></div>
+    <div class="chat-typing-indicator" id="chat-typing-indicator" style="display:none;">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span id="chat-typing-text">Team member is typing...</span>
+    </div>
+    <form class="chat-input-area" id="chat-send-form">
+      <input type="text" id="chat-input" placeholder="Message your team..." autocomplete="off" />
+      <button type="submit" class="btn btn-primary btn-small">
+        <span class="material-symbols-outlined">send</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Intro Modal -->
+  <div class="modal-overlay" id="sandbox-intro-modal">
+    <div class="modal-card glass-panel" style="max-width:600px;">
+      <div class="modal-header">
+        <h3>Welcome to Synergy OS</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <p style="font-size:14px; color:var(--text-secondary);">
+          This is your all-in-one hackathon project management dashboard. Built on the Enter Pro platform.
+        </p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Kanban Board</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Manage sprints with drag-and-drop task cards across columns.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Parcle Sync</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Bundle and sync your project state via the Parcel gateway.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Enter Pro Deploy</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">One-click staging and production deployment with live preview.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Leaderboard</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Track your rank against competing hackathon teams in real-time.</p>
+          </div>
+        </div>
+        <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+          <button class="btn btn-primary btn-glow" id="btn-intro-dismiss">Launch Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3 id="task-modal-title">Create New Task</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-id" />
+        <div class="form-group">
+          <label>Task Title</label>
+          <input type="text" class="form-control" id="task-title" required placeholder="Short, descriptive title..." />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" id="task-desc" rows="3" placeholder="Detailed implementation notes..." style="resize:none;"></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" id="task-priority">
+              <option>High</option><option selected>Medium</option><option>Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control" id="task-category">
+              <option>Frontend</option><option>Backend</option><option>Design</option><option>Docs</option><option>Testing</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Assignee</label>
+            <select class="form-control" id="task-assignee"></select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="task-status">
+              <option value="todo">To Do</option>
+              <option value="progress">In Progress</option>
+              <option value="review">In Review</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-task-delete" style="display:none; color:var(--danger-color); border-color:var(--danger-color); margin-right:auto;">Delete</button>
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Team Edit Modal -->
+  <div class="modal-overlay" id="team-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Edit Team Workspace</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="team-form">
+        <div class="form-group">
+          <label>Team Name</label>
+          <input type="text" class="form-control" id="team-name-input" required placeholder="Your team name..." />
+        </div>
+        <div class="form-group">
+          <label>Team Slogan</label>
+          <input type="text" class="form-control" id="team-slogan-input" placeholder="Memorable one-liner..." />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal-overlay" id="member-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Add Roster Member</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="member-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" class="form-control" id="member-name-input" required placeholder="e.g. Alex Nguyen" />
+        </div>
+        <div class="form-group">
+          <label>Role / Title</label>
+          <input type="text" class="form-control" id="member-role-input" required placeholder="e.g. Backend Engineer" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add to Roster</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaderboard Detail Modal -->
+  <div class="modal-overlay" id="leaderboard-detail-modal">
+    <div class="modal-card glass-panel" style="max-width:540px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="lead-modal-team-name">Team Name</h3>
+          <div style="font-size:12px; color:var(--text-secondary);" id="lead-modal-project">Project Name</div>
+        </div>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="detail-grid">
+          <div class="detail-stat"><span class="label">Rank</span><h2 class="text-purple" id="lead-modal-rank">#1</h2></div>
+          <div class="detail-stat"><span class="label">Score</span><h2 class="text-cyan" id="lead-modal-score">0</h2></div>
+          <div class="detail-stat"><span class="label">Syncs</span><h2 id="lead-modal-syncs">0</h2></div>
+          <div class="detail-stat"><span class="label">Tasks</span><h2 id="lead-modal-tasks">0/0</h2></div>
+        </div>
+        <div class="detail-section">
+          <h4>Project Tagline</h4>
+          <p style="font-size:13px; color:var(--text-secondary); font-style:italic;" id="lead-modal-tagline">-</p>
+        </div>
+        <div class="detail-section">
+          <h4>Team Roster</h4>
+          <div class="members-list-simple" id="lead-modal-members"></div>
+        </div>
+        <div class="btn-group">
+          <a class="btn btn-outline btn-small" id="lead-modal-repo" href="#" target="_blank">
+            <span class="material-symbols-outlined">code</span> View Repository
+          </a>
+          <a class="btn btn-outline btn-small" id="lead-modal-demo" href="#" target="_blank">
+            <span class="material-symbols-outlined">rocket</span> View Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Hub -->
+  <div class="toast-hub" id="toast-hub"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

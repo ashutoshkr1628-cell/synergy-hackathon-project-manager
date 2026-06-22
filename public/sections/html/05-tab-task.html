@@ -1,0 +1,67 @@
+        <!-- ===== TAB: TASK MANAGER ===== -->
+        <div class="tab-panel" id="tab-tasks" style="height:100%;">
+          <div class="tab-controls-row">
+            <div class="search-filters">
+              <div class="search-box">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" placeholder="Filter tasks by name..." id="task-filter-search" />
+              </div>
+              <select class="filter-select" id="task-filter-priority">
+                <option value="all">All Priorities</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select class="filter-select" id="task-filter-assignee">
+                <option value="all">All Assignees</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-glow dev-only" id="btn-create-task">
+              <span class="material-symbols-outlined">add</span> New Task
+            </button>
+          </div>
+          <div class="kanban-board">
+            <div class="kanban-column" id="col-todo">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-orange"></span>
+                  <h3>To Do</h3>
+                </div>
+                <span class="column-count" id="count-todo">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="todo"></div>
+            </div>
+            <div class="kanban-column" id="col-progress">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-cyan"></span>
+                  <h3>In Progress</h3>
+                </div>
+                <span class="column-count" id="count-progress">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="progress"></div>
+            </div>
+            <div class="kanban-column" id="col-review">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-purple"></span>
+                  <h3>Review</h3>
+                </div>
+                <span class="column-count" id="count-review">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="review"></div>
+            </div>
+            <div class="kanban-column" id="col-completed">
+              <div class="column-header">
+                <div class="header-title-group">
+                  <span class="column-dot bg-green"></span>
+                  <h3>Completed</h3>
+                </div>
+                <span class="column-count" id="count-completed">0</span>
+              </div>
+              <div class="kanban-cards-container" data-status="completed"></div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: TASK MANAGER -->
+

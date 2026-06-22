@@ -1,0 +1,82 @@
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="app-sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon logo-pulse">
+          <span class="material-symbols-outlined">hub</span>
+        </div>
+        <div class="brand-text">
+          <h1>SYNERGY</h1>
+          <span class="sub-brand">HACKATHON OS</span>
+        </div>
+      </div>
+      <div class="brand-tagline">
+        <span class="tagline-text">Ship faster. Collaborate smarter. Win together.</span>
+      </div>
+
+      <div class="sidebar-team-status">
+        <div class="team-avatar-container">
+          <div class="team-avatar" id="sidebar-team-avatar">TA</div>
+          <span class="status-indicator online"></span>
+        </div>
+        <div class="team-info">
+          <h3 id="sidebar-team-name">Team Alpha</h3>
+          <p id="sidebar-team-score">Points: 0</p>
+          <div class="score-level-bar">
+            <div class="score-level-fill" id="score-level-fill" style="width:0%"></div>
+          </div>
+          <div class="score-level-label" id="score-level-label">Lv.1 Beginner</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="menu-item active" data-tab="dashboard">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard
+        </button>
+        <button class="menu-item" data-tab="tasks">
+          <span class="material-symbols-outlined">task_alt</span>
+          Task Manager
+          <span class="badge" id="sidebar-pending-tasks" style="display:none;">0</span>
+        </button>
+        <button class="menu-item" data-tab="parcel-sync">
+          <span class="material-symbols-outlined">package_2</span>
+          Parcle Sync
+          <span class="badge-dot" id="sync-warning-dot" style="display:none;"></span>
+        </button>
+        <button class="menu-item" data-tab="deploy-submission">
+          <span class="material-symbols-outlined">cloud_upload</span>
+          Deploy & Submit
+        </button>
+        <button class="menu-item" data-tab="leaderboard">
+          <span class="material-symbols-outlined">leaderboard</span>
+          Leaderboard
+        </button>
+        <button class="menu-item admin-only" data-tab="admin-console" style="display:none;">
+          <span class="material-symbols-outlined">admin_panel_settings</span>
+          Admin Console
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <!-- Deadline Countdown -->
+        <div class="deadline-countdown" id="deadline-widget">
+          <div class="countdown-label">
+            <span class="material-symbols-outlined" style="font-size:14px;">timer</span>
+            Deadline
+          </div>
+          <div class="countdown-time" id="countdown-display">--:--:--</div>
+          <div class="countdown-subtext" id="countdown-subtext">Calculating...</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="system-time">
+          <span class="material-symbols-outlined">schedule</span>
+          <span id="live-clock">00:00:00</span>
+        </div>
+        <div class="build-version">Build v1.2.0 — Enter Pro SDK</div>
+        <a href="register.html" target="_blank" style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--secondary-color); text-decoration:none; margin-top:6px; opacity:0.8; transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+          <span class="material-symbols-outlined" style="font-size:12px;">app_registration</span>
+          Register a New Team
+        </a>
+      </div>
+    </aside>
+

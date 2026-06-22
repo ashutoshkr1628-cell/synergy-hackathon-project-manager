@@ -1,0 +1,50 @@
+
+.light-theme .glow-backdrop { opacity: 0.12; }
+.light-theme .app-header { background-color: rgba(255, 255, 255, 0.4); }
+.light-theme .terminal-panel { background: #0d0f17; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+.light-theme .terminal-header { background: #181c28; }
+.light-theme .device-header { background: #e5e7eb; }
+.light-theme .address-bar { background: #ffffff; border-color: #e5e7eb; }
+.light-theme .preview-device { background: #f9fafb; }
+.light-theme .live-sandbox-ui { background: #ffffff; }
+.light-theme .sandbox-card { background: #f3f4f6; border-color: #e5e7eb; }
+.light-theme .modal-card { background: #ffffff; }
+.light-theme .submission-card-dim { background: #f3f4f6; }
+.light-theme .github-sync-widget { background: rgba(0, 0, 0, 0.015); }
+.light-theme .timeline-node .node-circle { background: #e5e7eb; }
+.light-theme .chat-drawer { background: #ffffff; }
+.light-theme .chat-header { background: #f9fafb; }
+.light-theme .chat-messages { background: #ffffff; }
+.light-theme .chat-input-area { background: #f9fafb; }
+.light-theme .chat-input-area input { background: #ffffff; }
+
+/* --- Base Styles --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+.light-theme ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* --- Glowing Backdrops --- */
+.glow-backdrop { position: absolute; border-radius: 50%; filter: blur(140px); z-index: -1; pointer-events: none; opacity: 0.35; transition: opacity 0.3s; }
+.glow-1 { width: 500px; height: 500px; background: var(--primary-color); top: -10%; left: -10%; animation: float-slow 15s infinite alternate; }
+.glow-2 { width: 600px; height: 600px; background: var(--secondary-color); bottom: -10%; right: -10%; animation: float-slow 20s infinite alternate-reverse; }
+.glow-3 { width: 400px; height: 400px; background: var(--accent-color); top: 40%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; }
+
+@keyframes float-slow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, 40px) scale(1.1); }
+}

@@ -1,0 +1,173 @@
+  <div class="modal-overlay" id="sandbox-intro-modal">
+    <div class="modal-card glass-panel" style="max-width:600px;">
+      <div class="modal-header">
+        <h3>Welcome to Synergy OS</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <p style="font-size:14px; color:var(--text-secondary);">
+          This is your all-in-one hackathon project management dashboard. Built on the Enter Pro platform.
+        </p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Kanban Board</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Manage sprints with drag-and-drop task cards across columns.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Parcle Sync</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Bundle and sync your project state via the Parcel gateway.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Enter Pro Deploy</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">One-click staging and production deployment with live preview.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--panel-border);border-radius:8px;padding:12px;">
+            <h4 style="font-size:13px; font-weight:700; margin-bottom:4px;">Leaderboard</h4>
+            <p style="font-size:11px; color:var(--text-secondary);">Track your rank against competing hackathon teams in real-time.</p>
+          </div>
+        </div>
+        <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+          <button class="btn btn-primary btn-glow" id="btn-intro-dismiss">Launch Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3 id="task-modal-title">Create New Task</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-id" />
+        <div class="form-group">
+          <label>Task Title</label>
+          <input type="text" class="form-control" id="task-title" required placeholder="Short, descriptive title..." />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" id="task-desc" rows="3" placeholder="Detailed implementation notes..." style="resize:none;"></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" id="task-priority">
+              <option>High</option><option selected>Medium</option><option>Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control" id="task-category">
+              <option>Frontend</option><option>Backend</option><option>Design</option><option>Docs</option><option>Testing</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Assignee</label>
+            <select class="form-control" id="task-assignee"></select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="task-status">
+              <option value="todo">To Do</option>
+              <option value="progress">In Progress</option>
+              <option value="review">In Review</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-task-delete" style="display:none; color:var(--danger-color); border-color:var(--danger-color); margin-right:auto;">Delete</button>
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Team Edit Modal -->
+  <div class="modal-overlay" id="team-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Edit Team Workspace</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="team-form">
+        <div class="form-group">
+          <label>Team Name</label>
+          <input type="text" class="form-control" id="team-name-input" required placeholder="Your team name..." />
+        </div>
+        <div class="form-group">
+          <label>Team Slogan</label>
+          <input type="text" class="form-control" id="team-slogan-input" placeholder="Memorable one-liner..." />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal-overlay" id="member-modal">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Add Roster Member</h3>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <form id="member-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" class="form-control" id="member-name-input" required placeholder="e.g. Alex Nguyen" />
+        </div>
+        <div class="form-group">
+          <label>Role / Title</label>
+          <input type="text" class="form-control" id="member-role-input" required placeholder="e.g. Backend Engineer" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add to Roster</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaderboard Detail Modal -->
+  <div class="modal-overlay" id="leaderboard-detail-modal">
+    <div class="modal-card glass-panel" style="max-width:540px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="lead-modal-team-name">Team Name</h3>
+          <div style="font-size:12px; color:var(--text-secondary);" id="lead-modal-project">Project Name</div>
+        </div>
+        <button class="icon-btn modal-close-btn"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="detail-grid">
+          <div class="detail-stat"><span class="label">Rank</span><h2 class="text-purple" id="lead-modal-rank">#1</h2></div>
+          <div class="detail-stat"><span class="label">Score</span><h2 class="text-cyan" id="lead-modal-score">0</h2></div>
+          <div class="detail-stat"><span class="label">Syncs</span><h2 id="lead-modal-syncs">0</h2></div>
+          <div class="detail-stat"><span class="label">Tasks</span><h2 id="lead-modal-tasks">0/0</h2></div>
+        </div>
+        <div class="detail-section">
+          <h4>Project Tagline</h4>
+          <p style="font-size:13px; color:var(--text-secondary); font-style:italic;" id="lead-modal-tagline">-</p>
+        </div>
+        <div class="detail-section">
+          <h4>Team Roster</h4>
+          <div class="members-list-simple" id="lead-modal-members"></div>
+        </div>
+        <div class="btn-group">
+          <a class="btn btn-outline btn-small" id="lead-modal-repo" href="#" target="_blank">
+            <span class="material-symbols-outlined">code</span> View Repository
+          </a>
+          <a class="btn btn-outline btn-small" id="lead-modal-demo" href="#" target="_blank">
+            <span class="material-symbols-outlined">rocket</span> View Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+

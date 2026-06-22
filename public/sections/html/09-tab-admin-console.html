@@ -1,0 +1,114 @@
+        <!-- ===== TAB: ADMIN CONSOLE ===== -->
+        <div class="tab-panel" id="tab-admin-console">
+
+          <!-- ---- Pending Teams Dashboard ---- -->
+          <div class="glass-panel" style="padding:24px; margin-bottom:20px;">
+            <div class="panel-header" style="margin-bottom:16px;">
+              <div class="header-title">
+                <span class="material-symbols-outlined color-orange">groups</span>
+                <h3>Pending Team Registrations</h3>
+                <span class="badge" id="pending-teams-badge" style="background:rgba(249,115,22,0.15); color:var(--warning-color); border:1px solid rgba(249,115,22,0.25);">0</span>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button class="btn btn-outline btn-small" id="btn-register-link">
+                  <span class="material-symbols-outlined">open_in_new</span> Registration Page
+                </button>
+                <button class="btn btn-outline btn-small" id="btn-refresh-pending">
+                  <span class="material-symbols-outlined">refresh</span> Refresh
+                </button>
+                <button class="btn btn-primary btn-small" id="btn-bulk-approve" style="display:none;">
+                  <span class="material-symbols-outlined">done_all</span> Approve Selected
+                </button>
+              </div>
+            </div>
+
+            <!-- Pending teams list -->
+            <div id="pending-teams-list">
+              <div class="empty-state" id="pending-empty-state" style="padding:32px; text-align:center; color:var(--text-grey);">
+                <span class="material-symbols-outlined" style="font-size:36px; opacity:0.3;">inbox</span>
+                <p style="margin-top:8px; font-size:13px;">No pending team registrations.</p>
+                <a href="register.html" style="font-size:12px; color:var(--secondary-color); margin-top:6px; display:inline-block;">Open Registration Page</a>
+              </div>
+            </div>
+
+            <!-- Rejection modal overlay -->
+            <div class="modal-overlay" id="reject-modal-overlay" style="display:none; z-index:1100;">
+              <div class="modal-card" style="max-width:420px; padding:28px;">
+                <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">Reject Team Registration</h3>
+                <p style="font-size:12px; color:var(--text-secondary); margin-bottom:20px;">Provide a reason so the team knows why their registration was rejected.</p>
+                <input type="hidden" id="reject-team-id" />
+                <div class="form-group">
+                  <label>Rejection Reason <span style="color:var(--danger-color)">*</span></label>
+                  <textarea class="form-control" id="reject-reason-input" rows="3" placeholder="e.g. Team name already taken, incomplete project idea, etc."></textarea>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+                  <button class="btn btn-outline btn-small" id="reject-cancel-btn">Cancel</button>
+                  <button class="btn btn-small" id="reject-confirm-btn" style="background:var(--danger-color); color:#fff; border:none;">
+                    <span class="material-symbols-outlined">block</span> Confirm Rejection
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Audit Log ---- -->
+          <div class="glass-panel" style="padding:24px; margin-bottom:20px;">
+            <div class="panel-header" style="margin-bottom:16px;">
+              <div class="header-title">
+                <span class="material-symbols-outlined" style="color:var(--primary-color);">history</span>
+                <h3>Admin Audit Log</h3>
+              </div>
+              <button class="btn btn-outline btn-small" id="btn-clear-audit">
+                <span class="material-symbols-outlined">delete_sweep</span> Clear Log
+              </button>
+            </div>
+            <div id="audit-log-list">
+              <div style="text-align:center; padding:20px; color:var(--text-grey); font-size:12px;" id="audit-empty">No actions recorded yet.</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <!-- Settings Panel -->
+            <div class="glass-panel" style="padding:24px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:20px;">Global Hackathon Settings</h3>
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div class="form-group">
+                  <label>Submission Deadline</label>
+                  <input type="datetime-local" class="form-control" id="admin-deadline-input" value="2026-06-21T18:00" />
+                </div>
+                <div class="form-group">
+                  <label>Auto-sync Interval (seconds)</label>
+                  <input type="number" class="form-control" id="admin-autosync-input" value="60" min="10" max="3600" />
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <input type="checkbox" id="admin-allow-late" checked style="width:16px; height:16px;" />
+                  <label for="admin-allow-late" style="font-size:13px;">Allow Late Submissions</label>
+                </div>
+                <button class="btn btn-primary" id="btn-save-admin-settings">
+                  <span class="material-symbols-outlined">save</span> Save Settings
+                </button>
+              </div>
+            </div>
+            <!-- Fault Injection Panel -->
+            <div class="glass-panel" style="padding:24px;">
+              <h3 style="font-size:15px; font-weight:700; margin-bottom:20px;">Fault Injection &amp; Diagnostics</h3>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div style="font-size:12px; color:var(--text-secondary);">
+                  Inject failure scenarios to test system resilience and error handling flows.
+                </div>
+                <button class="btn btn-outline" id="btn-sim-sync-fail">
+                  <span class="material-symbols-outlined">sync_problem</span> Simulate Sync Failure
+                </button>
+                <button class="btn btn-outline" id="btn-sim-build-fail">
+                  <span class="material-symbols-outlined">error</span> Simulate Build Failure
+                </button>
+                <hr style="border-color:rgba(255,255,255,0.04); margin:6px 0;" />
+                <button class="btn btn-outline" id="btn-reset-db-state" style="border-color:var(--danger-color); color:var(--danger-color);">
+                  <span class="material-symbols-outlined">delete_forever</span> Reset All State Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: ADMIN CONSOLE -->
+

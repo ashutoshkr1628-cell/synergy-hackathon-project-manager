@@ -1,0 +1,270 @@
+        <!-- ===== TAB: DASHBOARD ===== -->
+        <div class="tab-panel active" id="tab-dashboard">
+
+          <!-- Metrics Grid -->
+          <div class="metrics-grid">
+            <div class="metric-card glass-panel glow-purple card-enter" style="--enter-delay:0ms">
+              <div class="metric-icon purple"><span class="material-symbols-outlined">leaderboard</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Current Rank</div>
+                <div class="metric-value" id="dash-rank">#4</div>
+                <div class="metric-trend"><span class="material-symbols-outlined">trending_up</span> Global Standings</div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-cyan card-enter" style="--enter-delay:80ms">
+              <div class="metric-icon cyan"><span class="material-symbols-outlined">task_alt</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Sprint Progress</div>
+                <div class="metric-value" id="dash-progress-text">0%</div>
+                <div class="progress-bar-small"><div class="progress-bar-fill" id="dash-progress-bar" style="width:0%; background: linear-gradient(to right, var(--secondary-color), var(--primary-color));"></div></div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-orange card-enter" style="--enter-delay:160ms">
+              <div class="metric-icon orange"><span class="material-symbols-outlined">package_2</span></div>
+              <div class="metric-data">
+                <div class="metric-label">Parcle Sync Status</div>
+                <div class="metric-value" id="dash-sync-count">0 Syncs</div>
+                <div class="metric-trend" id="dash-sync-status">Checking...</div>
+              </div>
+            </div>
+            <div class="metric-card glass-panel glow-green card-enter" style="--enter-delay:240ms">
+              <div class="metric-icon green"><span class="material-symbols-outlined">cloud_upload</span></div>
+              <div class="metric-data">
+                <div class="metric-label" id="deploy-metric-label">Environment Status</div>
+                <div class="metric-value text-success" id="dash-deploy-status">ONLINE</div>
+                <div class="metric-trend" id="dash-deploy-url">Deploy to activate online build</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Achievements Shelf -->
+          <div class="achievements-shelf glass-panel">
+            <div class="shelf-header">
+              <span class="material-symbols-outlined color-cyan">emoji_events</span>
+              <h3>Achievements &amp; Badges</h3>
+              <div class="badge-progress-pill" id="badge-progress-pill">0/5 Earned</div>
+            </div>
+            <div class="badge-grid" id="badge-shelf-grid"></div>
+          </div>
+
+          <!-- Mid Row: Analytics + VCS/Team -->
+          <div class="dashboard-mid-row">
+
+            <!-- SVG Analytics Suite -->
+            <div class="dashboard-card glass-panel glow-purple">
+              <div class="card-header">
+                <h3>Project Analytics</h3>
+                <div class="analytics-tabs">
+                  <button class="analytics-tab-btn active" data-chart="velocity">Velocity</button>
+                  <button class="analytics-tab-btn" data-chart="burndown">Burndown</button>
+                  <button class="analytics-tab-btn" data-chart="activity">Activity</button>
+                </div>
+              </div>
+              <div class="card-body" style="position:relative;">
+                <!-- Velocity Chart -->
+                <svg id="chart-velocity" class="analytics-svg" viewBox="0 0 500 180" style="display:block;">
+                  <defs>
+                    <linearGradient id="gradVelocity" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(139,92,246,0.5)" />
+                      <stop offset="100%" stop-color="rgba(139,92,246,0)" />
+                    </linearGradient>
+                  </defs>
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">TASK COMPLETION VELOCITY (WEEKLY)</text>
+                  <!-- Y-axis labels -->
+                  <text x="28" y="48" fill="var(--text-grey)" font-size="8" text-anchor="end">5</text>
+                  <text x="28" y="88" fill="var(--text-grey)" font-size="8" text-anchor="end">3</text>
+                  <text x="28" y="128" fill="var(--text-grey)" font-size="8" text-anchor="end">1</text>
+                  <!-- Grid lines -->
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Fill area -->
+                  <polygon points="35,125 110,105 185,85 260,65 335,75 410,45 480,55 480,165 35,165" fill="url(#gradVelocity)" opacity="0.5"/>
+                  <!-- Chart line -->
+                  <polyline points="35,125 110,105 185,85 260,65 335,75 410,45 480,55" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linejoin="round"/>
+                  <!-- Data points -->
+                  <circle class="chart-dot" cx="35" cy="125" r="4" data-tip="Week 1: 1 tasks completed"/>
+                  <circle class="chart-dot" cx="110" cy="105" r="4" data-tip="Week 2: 2 tasks completed"/>
+                  <circle class="chart-dot" cx="185" cy="85" r="4" data-tip="Week 3: 3 tasks completed"/>
+                  <circle class="chart-dot" cx="260" cy="65" r="4" data-tip="Week 4: 4 tasks (Team Sprint!)"/>
+                  <circle class="chart-dot" cx="335" cy="75" r="4" data-tip="Week 5: 3 (merge conflict delay)"/>
+                  <circle class="chart-dot pulse" cx="410" cy="45" r="5" data-tip="Week 6: 5 tasks completed!"/>
+                  <!-- X-axis labels -->
+                  <text x="35" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 1</text>
+                  <text x="110" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 2</text>
+                  <text x="185" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 3</text>
+                  <text x="260" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 4</text>
+                  <text x="335" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 5</text>
+                  <text x="410" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wk 6</text>
+                </svg>
+                <!-- Burndown Chart -->
+                <svg id="chart-burndown" class="analytics-svg" viewBox="0 0 500 180" style="display:none;">
+                  <defs>
+                    <linearGradient id="gradBurn" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(6,182,212,0.5)"/>
+                      <stop offset="100%" stop-color="rgba(6,182,212,0)"/>
+                    </linearGradient>
+                  </defs>
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">SPRINT BURNDOWN (IDEAL VS ACTUAL)</text>
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Ideal burndown -->
+                  <polyline points="35,45 480,165" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                  <!-- Actual burndown fill -->
+                  <polygon points="35,45 110,60 185,80 260,95 335,115 410,130 480,165 480,165 35,45" fill="url(#gradBurn)" opacity="0.4"/>
+                  <polyline points="35,45 110,60 185,80 260,95 335,115 410,130 480,165" fill="none" stroke="var(--secondary-color)" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle class="chart-dot" cx="35" cy="45" r="4" data-tip="Day 0: 10 remaining (start)"/>
+                  <circle class="chart-dot" cx="110" cy="60" r="4" data-tip="Day 2: 8 tasks remaining"/>
+                  <circle class="chart-dot" cx="185" cy="80" r="4" data-tip="Day 4: 6 remaining"/>
+                  <circle class="chart-dot" cx="260" cy="95" r="4" data-tip="Day 6: 5 remaining"/>
+                  <circle class="chart-dot" cx="335" cy="115" r="4" data-tip="Day 8: 3 remaining"/>
+                  <circle class="chart-dot pulse" cx="410" cy="130" r="5" data-tip="Day 10: 2 remaining (current)"/>
+                  <text x="35" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 0</text>
+                  <text x="110" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 2</text>
+                  <text x="185" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 4</text>
+                  <text x="260" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 6</text>
+                  <text x="335" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 8</text>
+                  <text x="410" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Day 10</text>
+                </svg>
+                <!-- Activity Chart (Bar) -->
+                <svg id="chart-activity" class="analytics-svg" viewBox="0 0 500 180" style="display:none;">
+                  <text x="30" y="20" fill="var(--text-grey)" font-size="9" font-family="JetBrains Mono">DAILY COMMITS &amp; SYNCS (LAST 7 DAYS)</text>
+                  <line x1="35" y1="45" x2="480" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="85" x2="480" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <line x1="35" y1="125" x2="480" y2="125" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Commits (purple bars) -->
+                  <rect x="45" y="95" width="24" height="70" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Mon: 3 commits"/>
+                  <rect x="120" y="75" width="24" height="90" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Tue: 4 commits"/>
+                  <rect x="195" y="115" width="24" height="50" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Wed: 2 commits"/>
+                  <rect x="270" y="65" width="24" height="100" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Thu: 5 commits"/>
+                  <rect x="345" y="85" width="24" height="80" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Fri: 4 commits"/>
+                  <rect x="420" y="55" width="24" height="110" rx="3" fill="var(--primary-color)" opacity="0.7" data-tip="Sat: 6 commits"/>
+                  <!-- Syncs (cyan bars) -->
+                  <rect x="72" y="125" width="18" height="40" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Mon: 1 sync"/>
+                  <rect x="147" y="105" width="18" height="60" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Tue: 2 syncs"/>
+                  <rect x="222" y="135" width="18" height="30" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Wed: 1 sync"/>
+                  <rect x="297" y="105" width="18" height="60" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Thu: 2 syncs"/>
+                  <rect x="372" y="115" width="18" height="50" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Fri: 2 syncs"/>
+                  <rect x="447" y="85" width="18" height="80" rx="3" fill="var(--secondary-color)" opacity="0.7" data-tip="Sat: 3 syncs"/>
+                  <!-- Legend -->
+                  <rect x="320" y="12" width="10" height="10" rx="2" fill="var(--primary-color)"/>
+                  <text x="334" y="21" fill="var(--text-secondary)" font-size="8">Commits</text>
+                  <rect x="380" y="12" width="10" height="10" rx="2" fill="var(--secondary-color)"/>
+                  <text x="394" y="21" fill="var(--text-secondary)" font-size="8">Syncs</text>
+                  <text x="57" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Mon</text>
+                  <text x="132" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Tue</text>
+                  <text x="207" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Wed</text>
+                  <text x="282" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Thu</text>
+                  <text x="357" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Fri</text>
+                  <text x="432" y="178" fill="var(--text-grey)" font-size="8" text-anchor="middle">Sat</text>
+                </svg>
+                <div id="chart-tooltip" class="chart-tooltip">Hover over chart elements to inspect details</div>
+              </div>
+            </div>
+
+            <!-- VCS & Team Workspace Card -->
+            <div class="dashboard-card glass-panel glow-cyan">
+              <div class="card-header">
+                <h3>VCS &amp; Team Workspace</h3>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <button class="text-btn" id="edit-team-btn">Edit Team</button>
+                  <button class="btn btn-outline btn-small dev-only" id="add-member-btn">
+                    <span class="material-symbols-outlined">person_add</span> Add
+                  </button>
+                </div>
+              </div>
+              <div class="card-body" style="gap:14px;">
+                <!-- GitHub Sync Widget -->
+                <div class="github-sync-widget">
+                  <div class="github-status-row">
+                    <span class="material-symbols-outlined" id="github-icon" style="font-size:28px; color:var(--text-grey);">device_hub</span>
+                    <div class="git-info-text">
+                      <h4 id="github-repo-lbl">Repository Offline</h4>
+                      <p id="github-branch-lbl">Branch: -</p>
+                    </div>
+                  </div>
+                  <!-- Connect form -->
+                  <div id="github-connect-form" style="display:flex; gap:8px;">
+                    <input type="text" class="form-control" id="github-repo-input" placeholder="https://github.com/team/repo" style="flex:1;" />
+                    <button class="btn btn-outline btn-small" id="btn-github-connect">Connect</button>
+                  </div>
+                  <!-- Active panel -->
+                  <div id="github-active-panel" style="display:none;">
+                    <div class="git-commit-list" id="git-commits-container"></div>
+                  </div>
+                </div>
+
+                <!-- Team Profile -->
+                <div class="team-profile-display">
+                  <div class="team-meta">
+                    <h4 id="team-display-name-lbl">Team Alpha</h4>
+                    <p class="team-slogan" id="team-display-slogan-lbl">Building the future, one parcel at a time.</p>
+                  </div>
+                </div>
+                <div class="team-members-section">
+                  <h5>Roster Members</h5>
+                  <div class="members-list" id="members-display-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dashboard Bottom Row -->
+          <div class="dashboard-mid-row" style="grid-template-columns: 1.6fr 1fr;">
+            <!-- Activity Timeline -->
+            <div class="dashboard-card glass-panel">
+              <div class="card-header">
+                <h3>Project Activity Feed</h3>
+                <button class="icon-btn" id="refresh-activity-btn" title="Refresh">
+                  <span class="material-symbols-outlined" style="font-size:18px;">refresh</span>
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="activity-timeline" id="dashboard-activity-timeline"></div>
+              </div>
+            </div>
+
+            <!-- Submission Checklist -->
+            <div class="dashboard-card glass-panel">
+              <div class="card-header">
+                <h3>Submission Checklist</h3>
+              </div>
+              <div class="card-body">
+                <ul class="checklist-list">
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-tasks-done" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-tasks">Complete all Core Tasks (0/0)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-parcel-sync" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-sync">Sync project data with Parcle</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-demo-deploy" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-deploy">Deploy demo to Enter Pro Production</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="checkbox-container">
+                      <input type="checkbox" id="chk-final-submit" disabled />
+                      <span class="checkbox-checkmark"></span>
+                      <span class="checklist-text" id="chk-lbl-submit">Submit final deliverables</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- END TAB: DASHBOARD -->
+

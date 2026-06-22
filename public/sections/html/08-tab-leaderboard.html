@@ -1,0 +1,77 @@
+        <!-- ===== TAB: LEADERBOARD ===== -->
+        <div class="tab-panel" id="tab-leaderboard">
+          <!-- Podium Top 3 -->
+          <div class="leaderboard-podium">
+            <!-- Silver (2nd) -->
+            <div class="podium-card glass-panel silver" style="order:1;">
+              <div class="podium-badge">2</div>
+              <div class="podium-team-details">
+                <h3 id="podium-2-name">DevDynamo</h3>
+                <p class="podium-score" id="podium-2-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+            <!-- Gold (1st) -->
+            <div class="podium-card glass-panel gold" style="order:2;">
+              <div class="podium-badge">1</div>
+              <div class="podium-crown"><span class="material-symbols-outlined">emoji_events</span></div>
+              <div class="podium-team-details">
+                <h3 id="podium-1-name">Team Alpha</h3>
+                <p class="podium-score" id="podium-1-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+            <!-- Bronze (3rd) -->
+            <div class="podium-card glass-panel bronze" style="order:3;">
+              <div class="podium-badge">3</div>
+              <div class="podium-team-details">
+                <h3 id="podium-3-name">Quantum Coderz</h3>
+                <p class="podium-score" id="podium-3-score">0 Points</p>
+                <div class="podium-sub-status">
+                  <span class="badge bg-purple-dim text-purple" style="font-size:9px;">Draft</span>
+                  <span class="sync-count">0 Syncs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Rankings Table -->
+          <div class="leaderboard-list-panel glass-panel">
+            <div class="panel-header">
+              <div class="header-title">
+                <span class="material-symbols-outlined color-orange">table_chart</span>
+                <h3>Full Rankings</h3>
+              </div>
+              <div class="search-box" style="width:200px;">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="leaderboard-search" placeholder="Search teams..." />
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Score</th>
+                    <th>Tasks</th>
+                    <th>Syncs</th>
+                    <th>Demo</th>
+                    <th>Status</th>
+                    <th>Mentor Notes</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: LEADERBOARD -->
+

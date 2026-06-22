@@ -1,0 +1,175 @@
+        <!-- ===== TAB: DEPLOY & SUBMISSION ===== -->
+        <div class="tab-panel" id="tab-deploy-submission" style="height:100%;">
+          <div class="deploy-grid" style="height:100%;">
+
+            <!-- Left: Deployer Control Panel -->
+            <div class="deploy-left-panel glass-panel">
+              <div class="panel-header">
+                <div class="header-title">
+                  <span class="material-symbols-outlined color-cyan">cloud_upload</span>
+                  <h3>Enter Pro Compiler</h3>
+                </div>
+                <span class="status-badge badge bg-purple-dim text-purple">READY</span>
+              </div>
+
+              <div class="deploy-controls">
+                <!-- Environment Selector -->
+                <div class="deploy-environment-selector">
+                  <button class="env-btn active" id="btn-env-staging" data-env="staging">Staging Preview</button>
+                  <button class="env-btn" id="btn-env-prod" data-env="production">Production Build</button>
+                </div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Build Command</label>
+                    <input type="text" class="form-control" id="deploy-build-cmd" value="npm run build" />
+                  </div>
+                  <div class="form-group">
+                    <label>Output Directory</label>
+                    <input type="text" class="form-control" id="deploy-output-dir" value="dist/" />
+                  </div>
+                  <div class="form-group" style="grid-column: 1/-1;">
+                    <label>Deploy Branch</label>
+                    <select class="form-control" id="deploy-branch">
+                      <option value="main">main (stable)</option>
+                      <option value="staging">staging (preview)</option>
+                      <option value="develop">develop (experimental)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="deploy-action-box">
+                  <button class="btn btn-primary btn-large btn-block btn-glow dev-only" id="btn-deploy-demo">
+                    <span class="material-symbols-outlined">cloud_upload</span> Deploy Demo to Enter.pro
+                  </button>
+                  <p class="hint-text" id="deploy-desc-hint" style="margin-top:8px; text-align:center;"></p>
+                </div>
+              </div>
+
+              <!-- Preview Device -->
+              <div style="padding:0 20px 20px;">
+                <div class="preview-device glass-panel">
+                  <div class="device-header">
+                    <div class="address-bar">
+                      <span class="material-symbols-outlined icon-secure">lock</span>
+                      <span id="device-address">https://team-alpha-staging.enter.pro/demo</span>
+                      <button id="refresh-preview-btn" title="Refresh Preview">
+                        <span class="material-symbols-outlined">refresh</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="device-body">
+                    <div class="preview-iframe-placeholder">
+                      <div class="offline-state" id="preview-offline-msg">
+                        <span class="material-symbols-outlined">cloud_off</span>
+                        <h4>No Active Build</h4>
+                        <p>Deploy to your selected environment to see the live sandbox mockup.</p>
+                      </div>
+                      <div class="live-sandbox-ui" id="preview-live-ui" style="display:none;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Deploy Terminal -->
+              <div style="padding:0 20px 20px; flex:1; display:flex; flex-direction:column; min-height:150px;">
+                <div class="terminal-panel" style="flex:1;">
+                  <div class="terminal-header">
+                    <div class="terminal-dots">
+                      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    </div>
+                    <span class="terminal-title">deploy-pipeline.enter.pro / output</span>
+                    <button class="icon-btn" id="clear-deploy-terminal-btn">
+                      <span class="material-symbols-outlined" style="font-size:14px;">delete_sweep</span>
+                    </button>
+                  </div>
+                  <div class="terminal-body" id="deploy-terminal-logs">
+                    <div class="log-line system">[ENTERPRO] Enter Pro Deployment Compiler ready. Configure and deploy.</div>
+                    <div class="log-line command"><span class="prompt">&gt;</span> <span class="cursor"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Submission Panel -->
+            <div class="deploy-right-panel">
+              <div class="submission-panel glass-panel">
+                <div class="panel-header">
+                  <div class="header-title">
+                    <span class="material-symbols-outlined" style="font-size:18px; color:var(--warning-color);">description</span>
+                    <h3>Deliverables Submission</h3>
+                  </div>
+                  <span class="badge badge-pulse">DEADLINE ACTIVE</span>
+                </div>
+                <form class="submission-form" id="submission-form">
+                  <input type="hidden" id="sub-demo-url" />
+                  <div class="form-group">
+                    <label>Project Title</label>
+                    <input type="text" class="form-control" id="sub-project-name" placeholder="e.g. CodeFlow AI" />
+                  </div>
+                  <div class="form-group">
+                    <label>Project Tagline</label>
+                    <input type="text" class="form-control" id="sub-tagline" placeholder="One-line product description..." />
+                  </div>
+                  <div class="form-group">
+                    <label>GitHub Repository URL</label>
+                    <input type="url" class="form-control" id="sub-github-url" placeholder="https://github.com/..." />
+                  </div>
+                  <div class="form-group">
+                    <label>Demo Video URL</label>
+                    <input type="url" class="form-control" id="sub-video-url" placeholder="https://youtube.com/..." />
+                  </div>
+                  <div class="form-group">
+                    <label>Pitch Deck URL</label>
+                    <input type="url" class="form-control" id="sub-deck-url" placeholder="https://slides.google.com/..." />
+                  </div>
+
+                  <div class="submission-actions">
+                    <div class="timeline-status">
+                      <div class="timeline-node active" id="node-deploy">
+                        <div class="node-circle">1</div>
+                        <div class="node-lbl">Deploy</div>
+                      </div>
+                      <div class="timeline-line" id="line-1"></div>
+                      <div class="timeline-node" id="node-submit">
+                        <div class="node-circle">2</div>
+                        <div class="node-lbl">Submit</div>
+                      </div>
+                      <div class="timeline-line" id="line-2"></div>
+                      <div class="timeline-node" id="node-review">
+                        <div class="node-circle">3</div>
+                        <div class="node-lbl">Review</div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-large dev-only" id="btn-submit-project" disabled>
+                      <span class="material-symbols-outlined">send</span> Submit Deliverables
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Mentor Evaluation Panel -->
+              <div class="glass-panel" id="mentor-eval-panel" style="padding:20px; flex-direction:column; gap:14px; display:none;">
+                <h3 style="font-size:14px; font-weight:700;">Mentor Evaluation Panel</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>UX Score (1-10)</label>
+                    <input type="number" class="form-control" id="eval-score-ux" min="1" max="10" value="8" />
+                  </div>
+                  <div class="form-group">
+                    <label>Code Score (1-10)</label>
+                    <input type="number" class="form-control" id="eval-score-code" min="1" max="10" value="8" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Review Comments</label>
+                  <textarea class="form-control" id="eval-comments" rows="3" placeholder="Enter feedback for the team..." style="resize:none;"></textarea>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-success" id="btn-eval-approve">Approve &amp; Score</button>
+                  <button class="btn btn-outline" id="btn-eval-request-changes">Request Changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END TAB: DEPLOY & SUBMISSION -->
+
